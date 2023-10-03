@@ -1,3 +1,6 @@
+# Ignore .npy because they cannot be pushed
+*.npy
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
