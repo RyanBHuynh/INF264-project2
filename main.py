@@ -15,4 +15,5 @@ if __name__ == "__main__":
     X = np.load("emnist_hex_images.npy")
     y = np.load("emnist_hex_labels.npy")
 
+    y.head()
     visualize_image(X[0])
