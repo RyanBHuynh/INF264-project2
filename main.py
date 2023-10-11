@@ -1,6 +1,13 @@
 # INF264 Project 2
 # Phillip Lei and Ryan Huynh
 
+# TODO:
+# - Create 3 different models to run
+# - Create model selection feature
+# - Perform model analysis
+# - Create model visualizations
+# - Create automated test pipeline
+
 # Import libraries
 import numpy as np
 import matplotlib.pyplot as plt
@@ -14,6 +21,3 @@ def visualize_image(X_entry):
 if __name__ == "__main__":
     X = np.load("emnist_hex_images.npy")
     y = np.load("emnist_hex_labels.npy")
-
-    y.head()
-    visualize_image(X[0])
