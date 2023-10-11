@@ -14,6 +14,12 @@ import matplotlib.pyplot as plt
 
 # Functions
 def visualize_image(X_entry):
+    """
+    Visualizes an image from the X array
+    
+    Parameters:
+     - X_entry is an entry from the array X
+    """
     plt.imshow(X_entry.reshape(20,20), vmin=0, vmax=255, cmap="gray")
     plt.show()
 
