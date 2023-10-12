@@ -151,8 +151,8 @@ def create_svm(X_train, y_train):
     svm = SVC(random_state=seed)
     
     parameter_grid = {
-        'C': [0.1, 1, 10, 100, 1000],  
-        'gamma': [1, 0.1, 0.01, 0.001, 0.0001], 
+        'C': [0.1, 1, 10, 100],  
+        'gamma': ["auto", "scale"], 
         'kernel': ['rbf', 'poly', 'sigmoid']
     }
     
