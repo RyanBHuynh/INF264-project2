@@ -35,24 +35,6 @@ def create_train_test_valid_sets(X, y, seed):
 
     return X_train, y_train, X_test, y_test, X_valid, y_valid
 
-def create_nn():
-    """
-    Creates a neural network model
-    """
-    pass
-
-def create_svm():
-    """
-    Creates a support vector machine model
-    """
-    pass
-
-def create_decision_tree():
-    """
-    Creates a decision tree
-    """
-    pass
-
 def choose_best_model():
     """
     Selects the best model out of the three
