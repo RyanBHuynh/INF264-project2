@@ -31,6 +31,7 @@ def create_train_test_valid_sets(X, y, seed):
 
     Return value: a dictionary containing train, test, and validation sets for X and y
     """
+    print("Splitting data...")
     # Create training set
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=seed)
 
@@ -50,6 +51,7 @@ def create_train_test_valid_sets(X, y, seed):
         }
     }
 
+    print("Data successfully split into train, test, and validation sets")
     return model_dict
 
 def choose_best_model(candidates, X_test, y_test):
@@ -239,7 +241,6 @@ if __name__ == "__main__":
     seed = 143 # Å
 
     # Step 2. Split processed data
-    print("Splitting data...")
     model_dict = create_train_test_valid_sets(X, y, seed)
 
     X_train = model_dict["X"]["train"]
