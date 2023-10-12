@@ -26,12 +26,25 @@ def create_train_test_valid_sets(X, y, seed):
      - seed: an integer for the randomization seed to ensure reproducibility
     """
     # Create training set
-    X_train, y_train, X_test, y_test = train_test_split(X, y, test_size=0.2, random_state=seed)
+    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=seed)
 
     # Split test into test and validation set
-    X_test, y_test, X_valid, y_valid = train_test_split(X_test, y_test, test_size=0.5, random_state=seed)
+    X_test, X_valid, y_test, y_valid = train_test_split(X_test, y_test, test_size=0.5, random_state=seed)
 
-    return X_train, y_train, X_test, y_test, X_valid, y_valid
+    models = {
+        "X": {
+            "train": X_train,
+            "test": X_test,
+            "valid": X_valid
+        },
+        "y": {
+            "train": y_train,
+            "test": y_test,
+            "valid": y_valid
+        }
+    }
+
+    return models
 
 def choose_best_model():
     """
@@ -60,7 +73,7 @@ Responsible for creating the three candidate models: nn, decision tree, support 
 
 Output: returns data structure of the three models
 """
-def create_all_models():
+def create_all_models(X_train, y_train):
     # 1: NEURAL NETWORK
     nn = create_nn(X_train, y_train)
     # 2: DECISION TREE
@@ -82,7 +95,7 @@ Creates one of the three candidates: nn
 Output: neural network model - sklearn
 """
 def create_nn(X_train, y_train): 
-
+    neural_network = MLPClassifier()
     pass
 
 """
@@ -116,9 +129,11 @@ if __name__ == "__main__":
     seed = 143 # Å
     
     # Step 2. Split processed data
-    X_train, y_train, X_test, y_test, X_valid, y_valid = create_train_test_valid_sets(X, y, seed)
+    models = create_train_test_valid_sets(X, y, seed)
     
     # Step 3. Create 3 test models
+    X_train = models['X']['train']
+    y_train = models['y']['train']
     models = create_all_models(X_train, y_train)
     
     # Step 4. Select model
