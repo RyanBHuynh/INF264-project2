@@ -61,6 +61,7 @@ def choose_best_model(candidates, X_test, y_test):
     nn_accuracy = accuracy_score(y_test, nn_pred)
     print("\nnn_accuracy:", nn_accuracy)
     
+    print("Running decision tree...")
     dtree = candidates["Decision Tree"]
     dtree_pred = dtree.predict(X_test)
     dtree_accuracy = accuracy_score(y_test, dtree_pred)
@@ -137,15 +138,16 @@ def create_dtree(X_train, y_train):
     dtree = DecisionTreeClassifier(random_state=seed)
     
     parameter_grid = {
-        "max_depth": [5, 10, 15, 20, 25, 30],
+        "max_depth": [20, 25, 30],
         "criterion": ["gini", "entropy"],
         "splitter": ["best", "random"]
     }
     
-    # grid_search = GridSearchCV(dtree, parameter_grid, scoring='accuracy', cv=5)
-    # grid_search.fit(X_train, y_train)
-    # best_params = grid_search.best_params_
-    # best_dtree = grid_search.best_estimator_
+    grid_search = GridSearchCV(dtree, parameter_grid, cv=3)
+    grid_search.fit(X_train, y_train)
+    best_params = grid_search.best_params_
+    print("Best Decision Tree Parameters: " + str(best_params))
+    best_dtree = grid_search.best_estimator_
     
     best_dtree = dtree.fit(X_train, y_train)
 
@@ -161,7 +163,24 @@ Creates one of the three candidates: support vector machine
 Output: support vector machine model - sklearn
 """
 def create_svm(X_train, y_train):
-    return None
+    print("Creating SVMs...")
+    svm = SVC(random_state=seed)
+    
+    parameter_grid = {
+        'C': [0.1, 1, 10, 100, 1000],  
+        'gamma': [1, 0.1, 0.01, 0.001, 0.0001], 
+        'kernel': ['rbf', 'poly', 'sigmoid']
+    }
+    
+    grid_search = GridSearchCV(svm, parameter_grid, cv=3)
+    
+    grid_search.fit(X_train, y_train)
+    
+    best_params = grid_search.best_params_
+    print("Best SVM Parameters: " + str(best_params))
+    best_svm = grid_search.best_estimator_
+    
+    return best_svm
 
 
 def evaluate_model():
