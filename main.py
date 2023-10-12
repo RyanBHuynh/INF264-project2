@@ -59,6 +59,11 @@ def choose_best_model(candidates, X_test, y_test):
     nn_pred = nn.predict(X_test)
     nn_accuracy = accuracy_score(y_test, nn_pred)
     print("nn_accuracy:", nn_accuracy)
+    
+    dtree = candidates["Decision Tree"]
+    dtree_pred = dtree.predict(X_test)
+    dtree_accuracy = accuracy_score(y_test, dtree_pred)
+    print("dtree_accuracy:", dtree_accuracy)
 
 def visualize_image(X_entry):
     """
