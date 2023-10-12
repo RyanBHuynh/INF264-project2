@@ -2,7 +2,10 @@
 # Phillip Lei and Ryan Huynh
 
 # TODO:
-# - Create 3 different models to run
+# - Create training dataset, test dataset, and validation dataset
+# - Create CNN
+# - Create support vector machine
+# - Create decision tree
 # - Create model selection feature
 # - Perform model analysis
 # - Create model visualizations
@@ -12,7 +15,23 @@
 import numpy as np
 import matplotlib.pyplot as plt
 
+from sklearn.model_selection import train_test_split
+
 # Functions
+def create_train_test_valid_sets(X, y, seed):
+    """
+    Parameters:
+     - X and y are the input dataset
+     - seed: an integer for the randomization seed to ensure reproducibility
+    """
+    # Create training set
+    X_train, y_train, X_test, y_test = train_test_split(X, y, test_size=0.2, random_state=seed)
+
+    # Split test into test and validation set
+    X_test, y_test, X_valid, y_valid = train_test_split(X_test, y_test, test_size=0.5, random_state=seed)
+
+    return X_train, y_train, X_test, y_test, X_valid, y_valid
+
 def visualize_image(X_entry):
     """
     Visualizes an image from the X array
