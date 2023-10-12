@@ -11,6 +11,9 @@
 # Import libraries
 import numpy as np
 import matplotlib.pyplot as plt
+from sklearn.neural_network import MLPClassifier
+from sklearn.tree import DecisionTreeClassifier
+from sklearn.svm import SVC
 
 # Functions
 def visualize_image(X_entry):
@@ -22,6 +25,21 @@ def visualize_image(X_entry):
     """
     plt.imshow(X_entry.reshape(20,20), vmin=0, vmax=255, cmap="gray")
     plt.show()
+
+def create_nn(X_train, y_train): 
+    pass
+
+def create_dtree(X_train, y_train):
+    pass
+
+def create_svm(X_train, y_train):
+    pass
+
+def evaluate_model():
+    pass
+
+def select_best_model():
+    pass
 
 # Main
 if __name__ == "__main__":
