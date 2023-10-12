@@ -67,6 +67,12 @@ def choose_best_model(candidates, X_test, y_test):
     dtree_accuracy = accuracy_score(y_test, dtree_pred)
     print("dtree_accuracy:", dtree_accuracy)
 
+    print("Running SVM...")
+    svm = candidates["Support Vector Machine"]
+    svm_pred = svm.predict(X_test)
+    svm_accuracy = accuracy_score(y_test, svm_pred)
+    print("svm_accuracy:", svm_accuracy)
+
 def visualize_image(X_entry):
     """
     Visualizes an image from the X array
