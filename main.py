@@ -2,8 +2,7 @@
 # Phillip Lei and Ryan Huynh
 
 # TODO:
-# - Create training dataset, test dataset, and validation dataset
-# - Create CNN
+# - Create neural network
 # - Create support vector machine
 # - Create decision tree
 # - Create model selection feature
@@ -31,6 +30,30 @@ def create_train_test_valid_sets(X, y, seed):
     X_test, y_test, X_valid, y_valid = train_test_split(X_test, y_test, test_size=0.5, random_state=seed)
 
     return X_train, y_train, X_test, y_test, X_valid, y_valid
+
+def create_nn():
+    """
+    Creates a neural network model
+    """
+    pass
+
+def create_svm():
+    """
+    Creates a support vector machine model
+    """
+    pass
+
+def create_decision_tree():
+    """
+    Creates a decision tree
+    """
+    pass
+
+def choose_best_model():
+    """
+    Selects the best model out of the three
+    """
+    pass
 
 def visualize_image(X_entry):
     """
