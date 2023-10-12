@@ -11,6 +11,7 @@
 # - Create automated test pipeline
 
 # Import libraries
+import time
 import numpy as np
 import matplotlib.pyplot as plt
 
@@ -58,7 +59,7 @@ def choose_best_model(candidates, X_test, y_test):
     nn = candidates["Neural Network"]
     nn_pred = nn.predict(X_test)
     nn_accuracy = accuracy_score(y_test, nn_pred)
-    print("nn_accuracy:", nn_accuracy)
+    print("\nnn_accuracy:", nn_accuracy)
     
     dtree = candidates["Decision Tree"]
     dtree_pred = dtree.predict(X_test)
@@ -96,7 +97,7 @@ def create_all_models(X_train, y_train, seed):
     
     candidates = {
         "Neural Network" : nn,
-        "Decision Tree " : dtree,
+        "Decision Tree" : dtree,
         "Support Vector Machine" : svm
     } 
     
@@ -108,12 +109,19 @@ Creates one of the three candidates: nn
 Output: neural network model - sklearn
 """
 def create_nn(X_train, y_train, seed): 
+    print("Training neural network...")
+    start_time = time.time()
+
     neural_network = MLPClassifier(
         hidden_layer_sizes = (100, 50, 25, 12),
         max_iter = 300,
         random_state = seed
     )
     trained_nn = neural_network.fit(X_train, y_train)
+    
+    total_time = time.time() - start_time
+    print("Neural network training complete")
+    print(f"Finished in {total_time} seconds")
 
     return trained_nn
 
@@ -123,6 +131,9 @@ Creates one of the three candidates: decision tree
 Output: decision tree model - sklearn
 """
 def create_dtree(X_train, y_train):
+    print("Creating decision tree...")
+    start_time = time.time()
+
     dtree = DecisionTreeClassifier(random_state=seed)
     
     parameter_grid = {
@@ -131,11 +142,17 @@ def create_dtree(X_train, y_train):
         "splitter": ["best", "random"]
     }
     
-    grid_search = GridSearchCV(dtree, parameter_grid, scoring='accuracy', cv=5)
-    grid_search.fit(X_train, y_train)
-    best_params = grid_search.best_params_
-    best_dtree = grid_search.best_estimator_
+    # grid_search = GridSearchCV(dtree, parameter_grid, scoring='accuracy', cv=5)
+    # grid_search.fit(X_train, y_train)
+    # best_params = grid_search.best_params_
+    # best_dtree = grid_search.best_estimator_
     
+    best_dtree = dtree.fit(X_train, y_train)
+
+    total_time = time.time() - start_time
+    print("Decision tree created")
+    print(f"Finished in {total_time} seconds")
+
     return best_dtree
 
 """
