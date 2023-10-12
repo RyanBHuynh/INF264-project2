@@ -192,6 +192,7 @@ if __name__ == "__main__":
     X_test = model_dict['X']['test']
     y_test = model_dict['y']['test']
     choose_best_model(models, X_test, y_test)
+
     # Step 5. Evaluate model
     
     # Step 6. Print out numbers like accuracy. Should be reproducible across runs
