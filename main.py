@@ -92,9 +92,6 @@ def create_svm(X_train, y_train):
 def evaluate_model():
     pass
 
-def select_best_model():
-    pass
-
 # Main
 if __name__ == "__main__":
     X = np.load("emnist_hex_images.npy")
@@ -105,7 +102,6 @@ if __name__ == "__main__":
     # Note: fix a seed for reproducibility
     
     # Step 2. Split processed data
-    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, shuffle=True)
     
     # Step 3. Create 3 test models
     
