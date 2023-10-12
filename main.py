@@ -19,6 +19,7 @@ from sklearn.tree import DecisionTreeClassifier
 from sklearn.svm import SVC
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import accuracy_score
+from sklearn.model_selection import GridSearchCV
 
 # Functions
 def create_train_test_valid_sets(X, y, seed):
@@ -117,7 +118,24 @@ Creates one of the three candidates: decision tree
 Output: decision tree model - sklearn
 """
 def create_dtree(X_train, y_train):
+<<<<<<< HEAD
+    dtree = DecisionTreeClassifier(random_state=seed)
+    
+    parameter_grid = {
+        "max_depth": [5, 10, 15, 20, 25, 30],
+        "criterion": ["gini", "entropy"],
+        "splitter": ["best", "random"]
+    }
+    
+    grid_search = GridSearchCV(dtree, parameter_grid, scoring='accuracy', cv=5)
+    grid_search.fit(X_train, y_train)
+    best_params = grid_search.best_params_
+    best_dtree = grid_search.best_estimator_
+    
+    return best_dtree
+=======
     return None
+>>>>>>> ecf66956a131a8823e2a16e9052e204ea2d1062b
 
 """
 Creates one of the three candidates: support vector machine
@@ -145,8 +163,8 @@ if __name__ == "__main__":
     model_dict = create_train_test_valid_sets(X, y, seed)
     
     # Step 3. Create 3 test models
-    X_train = model_dict['X']['train']
-    y_train = model_dict['y']['train']
+    X_train = model_dict["X"]["train"]
+    y_train = model_dict["y"]["train"]
     models = create_all_models(X_train, y_train, seed)
     
     # Step 4. Select model
