@@ -12,6 +12,7 @@
 
 # Import libraries
 import time
+import math
 import numpy as np
 import matplotlib.pyplot as plt
 
@@ -20,7 +21,7 @@ from sklearn.tree import DecisionTreeClassifier
 from sklearn.svm import SVC
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import accuracy_score
-from sklearn.model_selection import GridSearchCV
+from sklearn.model_selection import GridSearchCV, cross_val_score
 
 # Functions
 def create_train_test_valid_sets(X, y, seed):
@@ -56,6 +57,22 @@ def choose_best_model(candidates, X_test, y_test):
     """
     Selects the best model out of the three
     """
+    best_model = None
+    best_score = 0
+    
+    for name, model in candidates:
+        # 10 is a common cross validation fold value
+        mean_score = cross_val_score(model, X_test, y_test, vc=10).mean()
+        
+        if mean_score > best_score:
+            best_score = mean_score
+            best_model = model
+            
+    print("Best model: ", model)
+    print("Score of model: ", best_score)
+    
+    # Looking at accuracy values 
+    print("Running neural network...")
     nn = candidates["Neural Network"]
     nn_pred = nn.predict(X_test)
     nn_accuracy = accuracy_score(y_test, nn_pred)
