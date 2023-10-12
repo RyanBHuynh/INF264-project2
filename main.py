@@ -58,10 +58,23 @@ def preprocess_data(X, y):
 """
 Responsible for creating the three candidate models: nn, decision tree, support vector machine.
 
-Output: returns array of the three models
+Output: returns data structure of the three models
 """
 def create_all_models():
-    pass
+    # 1: NEURAL NETWORK
+    nn = create_nn(X_train, y_train)
+    # 2: DECISION TREE
+    dtree = create_dtree(X_train, y_train)
+    # 3: SUPPORT VECTOR MACHINE
+    svm = create_svm(X_train, y_train)
+    
+    candidates = {
+        "Neural Network" : nn,
+        "Decision Tree " : dtree,
+        "Support Vector Machine" : svm
+    } 
+    
+    return candidates
 
 """
 Creates one of the three candidates: nn
