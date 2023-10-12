@@ -18,8 +18,6 @@ from sklearn.tree import DecisionTreeClassifier
 from sklearn.svm import SVC
 from sklearn.model_selection import train_test_split
 
-from sklearn.model_selection import train_test_split
-
 # Functions
 def create_train_test_valid_sets(X, y, seed):
     """
@@ -71,6 +69,7 @@ Creates one of the three candidates: nn
 Output: neural network model - sklearn
 """
 def create_nn(X_train, y_train): 
+
     pass
 
 """
