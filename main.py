@@ -94,13 +94,13 @@ Responsible for creating the three candidate models: nn, decision tree, support 
 
 Output: returns data structure of the three models
 """
-def create_all_models(X_train, y_train, seed):
+def create_all_models(X_train, y_train, X_test, y_test, seed):
     # 1: NEURAL NETWORK
-    nn = create_nn(X_train, y_train, seed)
+    nn = create_nn(X_train, y_train, X_test, y_test, seed)
     # 2: DECISION TREE
-    dtree = create_dtree(X_train, y_train)
+    dtree = create_dtree(X_train, y_train, X_test, y_test, seed)
     # 3: SUPPORT VECTOR MACHINE
-    svm = create_svm(X_train, y_train)
+    svm = create_svm(X_train, y_train, X_test, y_test, seed)
     
     candidates = {
         "Neural Network" : nn,
@@ -115,52 +115,66 @@ Creates one of the three candidates: nn
 
 Output: neural network model - sklearn
 """
-def create_nn(X_train, y_train, seed): 
+def create_nn(X_train, y_train, X_test, y_test, seed, tuning=False): 
     print("Training neural network...")
     start_time = time.time()
 
-    neural_network = MLPClassifier(
-        hidden_layer_sizes = (100, 50, 25, 12),
-        max_iter = 300,
-        random_state = seed
-    )
-    trained_nn = neural_network.fit(X_train, y_train)
+    neural_network = MLPClassifier(random_state = seed)
+
+    if tuning:
+        parameter_grid = {
+            "max_depth": ['identity', 'logistic', 'tanh', 'relu'],
+            "solver": ['lbfgs', 'sgd', 'adam'],
+            "learning_rate": ['constant', 'adaptive']
+        }
+        
+        grid_search = GridSearchCV(neural_network, parameter_grid, cv=3)
+        grid_search.fit(X_train, y_train)
+        best_params = grid_search.best_params_
+        print("Best Neural Network Parameters: " + str(best_params))
+        best_nn = grid_search.best_estimator_
+        best_nn = neural_network.fit(X_train, y_train)
+    else:
+        best_nn = neural_network.fit(X_train, y_train)
     
     total_time = time.time() - start_time
     print("Neural network training complete")
     print(f"Finished in {total_time} seconds")
 
     # DEBUG ACCURACY
-    nn_pred = trained_nn.predict(X_test)
+    nn_pred = best_nn.predict(X_test)
     nn_accuracy = accuracy_score(y_test, nn_pred)
     print("\nnn_accuracy:", nn_accuracy)
 
-    return trained_nn
+    return best_nn
 
 """
 Creates one of the three candidates: decision tree
 
 Output: decision tree model - sklearn
 """
-def create_dtree(X_train, y_train):
+def create_dtree(X_train, y_train, X_test, y_test, seed, tuning=False):
     print("Creating decision tree...")
     start_time = time.time()
 
     dtree = DecisionTreeClassifier(random_state=seed)
     
-    parameter_grid = {
-        "max_depth": [20, 25, 30],
-        "criterion": ["gini", "entropy"],
-        "splitter": ["best", "random"]
-    }
-    
-    grid_search = GridSearchCV(dtree, parameter_grid, cv=3)
-    grid_search.fit(X_train, y_train)
-    best_params = grid_search.best_params_
-    print("Best Decision Tree Parameters: " + str(best_params))
-    best_dtree = grid_search.best_estimator_
-    
-    best_dtree = dtree.fit(X_train, y_train)
+    if tuning: 
+        parameter_grid = {
+            "max_depth": [20, 25, 30],
+            "criterion": ["gini", "entropy"],
+            "splitter": ["best", "random"]
+        }
+        
+        grid_search = GridSearchCV(dtree, parameter_grid, cv=3)
+        grid_search.fit(X_train, y_train)
+        best_params = grid_search.best_params_
+        print("Best Decision Tree Parameters: " + str(best_params))
+        best_dtree = grid_search.best_estimator_
+        best_dtree = dtree.fit(X_train, y_train)
+
+    else:
+        best_dtree = dtree.fit(X_train, y_train)
 
     total_time = time.time() - start_time
     print("Decision tree created")
@@ -178,25 +192,27 @@ Creates one of the three candidates: support vector machine
 
 Output: support vector machine model - sklearn
 """
-def create_svm(X_train, y_train):
+def create_svm(X_train, y_train, X_test, y_test, tuning=False):
     print("Creating SVMs...")
     start_time = time.time()
 
     svm = SVC(random_state=seed)
     
-    parameter_grid = {
-        'C': [0.1, 1, 10, 100],  
-        'gamma': ["auto", "scale"], 
-        'kernel': ['rbf', 'poly', 'sigmoid']
-    }
+    if tuning:
+        parameter_grid = {
+            'C': [0.1, 1, 10, 100],  
+            'gamma': ["auto", "scale"], 
+            'kernel': ['rbf', 'poly', 'sigmoid']
+        }
     
-    grid_search = GridSearchCV(svm, parameter_grid, cv=3)
-    
-    grid_search.fit(X_train, y_train)
-    
-    best_params = grid_search.best_params_
-    print("Best SVM Parameters: " + str(best_params))
-    best_svm = grid_search.best_estimator_
+        grid_search = GridSearchCV(svm, parameter_grid, cv=3)
+        grid_search.fit(X_train, y_train)
+        best_params = grid_search.best_params_
+        print("Best SVM Parameters: " + str(best_params))
+        best_svm = grid_search.best_estimator_
+
+    else:
+        best_svm = svm.fit(X_train, y_train)
 
     total_time = time.time() - start_time
     print("SVM created")
@@ -225,15 +241,16 @@ if __name__ == "__main__":
 
     # Step 2. Split processed data
     model_dict = create_train_test_valid_sets(X, y, seed)
-    
-    # Step 3. Create 3 test models
+
     X_train = model_dict["X"]["train"]
     y_train = model_dict["y"]["train"]
-    models = create_all_models(X_train, y_train, seed)
-    
-    # Step 4. Select model
     X_test = model_dict['X']['test']
     y_test = model_dict['y']['test']
+
+    # Step 3. Create 3 test models
+    models = create_all_models(X_train, y_train, X_test, y_test, seed)
+    
+    # Step 4. Select model
     choose_best_model(models, X_test, y_test)
 
     # Step 5. Evaluate model
