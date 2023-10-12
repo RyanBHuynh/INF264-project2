@@ -24,6 +24,8 @@ def create_train_test_valid_sets(X, y, seed):
     Parameters:
      - X and y are the input dataset
      - seed: an integer for the randomization seed to ensure reproducibility
+
+    Return value: a dictionary containing train, test, and validation sets for X and y
     """
     # Create training set
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=seed)
@@ -31,7 +33,7 @@ def create_train_test_valid_sets(X, y, seed):
     # Split test into test and validation set
     X_test, X_valid, y_test, y_valid = train_test_split(X_test, y_test, test_size=0.5, random_state=seed)
 
-    models = {
+    model_dict = {
         "X": {
             "train": X_train,
             "test": X_test,
@@ -44,7 +46,7 @@ def create_train_test_valid_sets(X, y, seed):
         }
     }
 
-    return models
+    return model_dict
 
 def choose_best_model():
     """
@@ -129,7 +131,7 @@ if __name__ == "__main__":
     seed = 143 # Å
     
     # Step 2. Split processed data
-    models = create_train_test_valid_sets(X, y, seed)
+    model_dict = create_train_test_valid_sets(X, y, seed)
     
     # Step 3. Create 3 test models
     X_train = models['X']['train']
