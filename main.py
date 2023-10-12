@@ -130,6 +130,11 @@ def create_nn(X_train, y_train, seed):
     print("Neural network training complete")
     print(f"Finished in {total_time} seconds")
 
+    # DEBUG ACCURACY
+    nn_pred = trained_nn.predict(X_test)
+    nn_accuracy = accuracy_score(y_test, nn_pred)
+    print("\nnn_accuracy:", nn_accuracy)
+
     return trained_nn
 
 """
@@ -161,6 +166,11 @@ def create_dtree(X_train, y_train):
     print("Decision tree created")
     print(f"Finished in {total_time} seconds")
 
+    # DEBUG ACCURACY
+    dtree_pred = best_dtree.predict(X_test)
+    dtree_accuracy = accuracy_score(y_test, dtree_pred)
+    print("dtree_accuracy:", dtree_accuracy)
+
     return best_dtree
 
 """
@@ -191,6 +201,11 @@ def create_svm(X_train, y_train):
     total_time = time.time() - start_time
     print("SVM created")
     print(f"Finished in {total_time} seconds")
+
+    # DEBUG ACCURACY
+    svm_pred = best_svm.predict(X_test)
+    svm_accuracy = accuracy_score(y_test, svm_pred)
+    print("svm_accuracy:", svm_accuracy)
 
     return best_svm
 
