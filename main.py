@@ -105,7 +105,7 @@ Output: neural network model - sklearn
 def create_nn(X_train, y_train, seed): 
     neural_network = MLPClassifier(
         hidden_layer_sizes = (100, 50, 25, 12),
-        max_iter = 1000,
+        max_iter = 300,
         random_state = seed
     )
     trained_nn = neural_network.fit(X_train, y_train)
