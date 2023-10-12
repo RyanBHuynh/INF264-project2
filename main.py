@@ -75,9 +75,9 @@ Responsible for creating the three candidate models: nn, decision tree, support 
 
 Output: returns data structure of the three models
 """
-def create_all_models(X_train, y_train):
+def create_all_models(X_train, y_train, seed):
     # 1: NEURAL NETWORK
-    nn = create_nn(X_train, y_train)
+    nn = create_nn(X_train, y_train, seed)
     # 2: DECISION TREE
     dtree = create_dtree(X_train, y_train)
     # 3: SUPPORT VECTOR MACHINE
@@ -96,9 +96,14 @@ Creates one of the three candidates: nn
 
 Output: neural network model - sklearn
 """
-def create_nn(X_train, y_train): 
-    neural_network = MLPClassifier()
-    pass
+def create_nn(X_train, y_train, seed): 
+    neural_network = MLPClassifier(
+        hidden_layer_sizes = (10, 2),
+        max_iter = 100,
+        random_state = seed
+    )
+
+    return neural_network
 
 """
 Creates one of the three candidates: decision tree
@@ -134,9 +139,9 @@ if __name__ == "__main__":
     model_dict = create_train_test_valid_sets(X, y, seed)
     
     # Step 3. Create 3 test models
-    X_train = models['X']['train']
-    y_train = models['y']['train']
-    models = create_all_models(X_train, y_train)
+    X_train = model_dict['X']['train']
+    y_train = model_dict['y']['train']
+    models = create_all_models(X_train, y_train, seed)
     
     # Step 4. Select model
     
