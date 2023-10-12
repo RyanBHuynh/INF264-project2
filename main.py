@@ -18,6 +18,7 @@ from sklearn.neural_network import MLPClassifier
 from sklearn.tree import DecisionTreeClassifier
 from sklearn.svm import SVC
 from sklearn.model_selection import train_test_split
+from sklearn.metrics import accuracy_score
 
 # Functions
 def create_train_test_valid_sets(X, y, seed):
@@ -54,8 +55,9 @@ def choose_best_model(candidates, X_test, y_test):
     Selects the best model out of the three
     """
     nn = candidates["Neural Network"]
-    nn_accuracy = accuracy_score()
-    pass
+    nn_pred = nn.predict(X_test)
+    nn_accuracy = accuracy_score(y_test, nn_pred)
+    print("nn_accuracy:", nn_accuracy)
 
 def visualize_image(X_entry):
     """
@@ -101,12 +103,13 @@ Output: neural network model - sklearn
 """
 def create_nn(X_train, y_train, seed): 
     neural_network = MLPClassifier(
-        hidden_layer_sizes = (10, 2),
-        max_iter = 100,
+        hidden_layer_sizes = (100, 50, 25, 12),
+        max_iter = 1000,
         random_state = seed
     )
+    trained_nn = neural_network.fit(X_train, y_train)
 
-    return neural_network
+    return trained_nn
 
 """
 Creates one of the three candidates: decision tree
@@ -114,7 +117,7 @@ Creates one of the three candidates: decision tree
 Output: decision tree model - sklearn
 """
 def create_dtree(X_train, y_train):
-    pass
+    return None
 
 """
 Creates one of the three candidates: support vector machine
@@ -122,7 +125,7 @@ Creates one of the three candidates: support vector machine
 Output: support vector machine model - sklearn
 """
 def create_svm(X_train, y_train):
-    pass
+    return None
 
 
 def evaluate_model():
@@ -136,8 +139,8 @@ if __name__ == "__main__":
     # Step 1. Preprocess Data, do we need this? Eg: making images smaller
     
     # Note: fix a seed for reproducibility
-    seed = 143 # Å
-    
+    # seed = 143 # Å
+    seed = 10000
     # Step 2. Split processed data
     model_dict = create_train_test_valid_sets(X, y, seed)
     
@@ -147,7 +150,9 @@ if __name__ == "__main__":
     models = create_all_models(X_train, y_train, seed)
     
     # Step 4. Select model
-    
+    X_test = model_dict['X']['test']
+    y_test = model_dict['y']['test']
+    choose_best_model(models, X_test, y_test)
     # Step 5. Evaluate model
     
     # Step 6. Print out numbers like accuracy. Should be reproducible across runs
