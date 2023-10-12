@@ -110,7 +110,7 @@ Output: neural network model - sklearn
 def create_nn(X_train, y_train, seed): 
     neural_network = MLPClassifier(
         hidden_layer_sizes = (100, 50, 25, 12),
-        max_iter = 1000,
+        max_iter = 300,
         random_state = seed
     )
     trained_nn = neural_network.fit(X_train, y_train)
@@ -158,8 +158,8 @@ if __name__ == "__main__":
     # Step 1. Preprocess Data, do we need this? Eg: making images smaller
     
     # Note: fix a seed for reproducibility
-    # seed = 143 # Å
-    seed = 10000
+    seed = 143 # Å
+
     # Step 2. Split processed data
     model_dict = create_train_test_valid_sets(X, y, seed)
     
