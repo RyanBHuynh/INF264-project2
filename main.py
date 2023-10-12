@@ -139,8 +139,8 @@ if __name__ == "__main__":
     # Step 1. Preprocess Data, do we need this? Eg: making images smaller
     
     # Note: fix a seed for reproducibility
-    # seed = 143 # Å
-    seed = 10000
+    seed = 143 # Å
+
     # Step 2. Split processed data
     model_dict = create_train_test_valid_sets(X, y, seed)
     
