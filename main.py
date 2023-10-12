@@ -164,6 +164,8 @@ Output: support vector machine model - sklearn
 """
 def create_svm(X_train, y_train):
     print("Creating SVMs...")
+    start_time = time.time()
+
     svm = SVC(random_state=seed)
     
     parameter_grid = {
@@ -179,7 +181,11 @@ def create_svm(X_train, y_train):
     best_params = grid_search.best_params_
     print("Best SVM Parameters: " + str(best_params))
     best_svm = grid_search.best_estimator_
-    
+
+    total_time = time.time() - start_time
+    print("SVM created")
+    print(f"Finished in {total_time} seconds")
+
     return best_svm
 
 
