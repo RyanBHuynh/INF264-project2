@@ -13,6 +13,7 @@
 # Import libraries
 import numpy as np
 import matplotlib.pyplot as plt
+
 from sklearn.neural_network import MLPClassifier
 from sklearn.tree import DecisionTreeClassifier
 from sklearn.svm import SVC
@@ -48,10 +49,12 @@ def create_train_test_valid_sets(X, y, seed):
 
     return model_dict
 
-def choose_best_model():
+def choose_best_model(candidates, X_test, y_test):
     """
     Selects the best model out of the three
     """
+    nn = candidates["Neural Network"]
+    nn_accuracy = accuracy_score()
     pass
 
 def visualize_image(X_entry):
