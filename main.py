@@ -118,7 +118,6 @@ Creates one of the three candidates: decision tree
 Output: decision tree model - sklearn
 """
 def create_dtree(X_train, y_train):
-<<<<<<< HEAD
     dtree = DecisionTreeClassifier(random_state=seed)
     
     parameter_grid = {
@@ -133,9 +132,6 @@ def create_dtree(X_train, y_train):
     best_dtree = grid_search.best_estimator_
     
     return best_dtree
-=======
-    return None
->>>>>>> ecf66956a131a8823e2a16e9052e204ea2d1062b
 
 """
 Creates one of the three candidates: support vector machine
