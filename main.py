@@ -188,7 +188,6 @@ def create_svm(X_train, y_train):
 
     return best_svm
 
-
 def evaluate_model():
     pass
 
@@ -203,18 +202,22 @@ if __name__ == "__main__":
     seed = 143 # Å
 
     # Step 2. Split processed data
+    print("Splitting data...")
     model_dict = create_train_test_valid_sets(X, y, seed)
     
     # Step 3. Create 3 test models
+    print("Creating 3 candidate models...")
     X_train = model_dict["X"]["train"]
     y_train = model_dict["y"]["train"]
     models = create_all_models(X_train, y_train, seed)
     
     # Step 4. Select model
+    print("Selecting best model...")
     X_test = model_dict['X']['test']
     y_test = model_dict['y']['test']
     choose_best_model(models, X_test, y_test)
 
     # Step 5. Evaluate model
+    print("Evaluating model...")
     
     # Step 6. Print out numbers like accuracy. Should be reproducible across runs
