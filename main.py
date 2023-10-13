@@ -33,7 +33,6 @@ def create_train_test_valid_sets(X, y, seed):
 
     Return value: a dictionary containing train, test, and validation sets for X and y
     """
-    print("Splitting data...")
     # Create training set
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.8, random_state=seed)
 
@@ -105,10 +104,19 @@ def visualize_image(X_entry):
     plt.show()
 
 """
+Process data by setting image pixels to binary values and scaling images down.
+Intended to help computation run time.
 
 """
-def preprocess_data(X, y):
-    pass
+def preprocess_data(X):
+    processed_X = []
+    
+    for image in X:
+        image = normalize_image_rgb(image)
+        image = resize_image(image)
+        processed_X.append(image)
+    
+    return processed_X
 
 """
 Shrinking an image due to running time constraints. Smaller images (np arrays) 
@@ -117,15 +125,33 @@ should help our training run faster.
 Output: resized np array representing an image
 """
 def resize_image(image):
+    # print("Image Size: ", len(image))
     # turn image into np array
-    if type(image) is not np.array:
+    if isinstance(image, np.ndarray):
         image = np.array(image)
         
-    image = np.reshape(20, 20)
-    resized_image = skimg.block_reduce(image, (10, 10), np.max) # Max pooling function
+    image = image.reshape(20, 20)
+    # print("Image: ", image)
+    # Max pooling function to reduce image by a factor of 2
+    resized_image = skimg.block_reduce(image, (2, 2), np.max) 
 
     return resized_image.reshape(100)
     
+"""
+Normalize pixel values of the image to 0 or 1.
+
+Output: image with each value being binary
+"""
+def normalize_image_rgb(image):
+    border = 127
+    for i in range(len(image)):
+        if image[i] > border:
+            image[i] = 1
+        else:
+            image[i] = 0
+            
+    return image    
+
 """
 Responsible for creating the three candidate models: nn, decision tree, support vector machine.
 
@@ -270,12 +296,15 @@ if __name__ == "__main__":
     X = np.load("emnist_hex_images.npy")
     y = np.load("emnist_hex_labels.npy")
     
-    # Step 1. Preprocess Data, do we need this? Eg: making images smaller
+    # Step 1. Preprocess Data
+    print("Preprocessing data...")
+    X = preprocess_data(X)
     
     # Note: fix a seed for reproducibility
     seed = 143 # Å
 
     # Step 2. Split processed data
+    print("Splitting data...")
     model_dict = create_train_test_valid_sets(X, y, seed)
 
     X_train = model_dict["X"]["train"]
