@@ -15,6 +15,7 @@ import time
 import math
 import numpy as np
 import matplotlib.pyplot as plt
+import skimage.measure as skimg
 
 from sklearn.neural_network import MLPClassifier
 from sklearn.tree import DecisionTreeClassifier
@@ -108,6 +109,22 @@ def visualize_image(X_entry):
 """
 def preprocess_data(X, y):
     pass
+
+"""
+Shrinking an image due to running time constraints. Smaller images (np arrays) 
+should help our training run faster.
+
+Output: resized np array representing an image
+"""
+def resize_image(image):
+    # turn image into np array
+    if type(image) is not np.array:
+        image = np.array(image)
+        
+    image = np.reshape(20, 20)
+    resized_image = skimg.block_reduce(image, (10, 10), np.max) # Max pooling function
+
+    return resized_image.reshape(100)
     
 """
 Responsible for creating the three candidate models: nn, decision tree, support vector machine.
