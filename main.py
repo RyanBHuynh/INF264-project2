@@ -34,7 +34,7 @@ def create_train_test_valid_sets(X, y, seed):
     """
     print("Splitting data...")
     # Create training set
-    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=seed)
+    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.9, random_state=seed)
 
     # Split test into test and validation set
     X_test, X_valid, y_test, y_valid = train_test_split(X_test, y_test, test_size=0.5, random_state=seed)
@@ -135,7 +135,7 @@ Creates one of the three candidates: nn
 Output: neural network model - sklearn
 """
 def create_nn(X_train, y_train, X_test, y_test, seed, tuning=False): 
-    print("Training neural network...")
+    print("\nCreating neural network...")
     start_time = time.time()
 
     neural_network = MLPClassifier(random_state = seed)
@@ -173,7 +173,7 @@ Creates one of the three candidates: decision tree
 Output: decision tree model - sklearn
 """
 def create_dtree(X_train, y_train, X_test, y_test, seed, tuning=False):
-    print("Creating decision tree...")
+    print("\nCreating decision tree...")
     start_time = time.time()
 
     dtree = DecisionTreeClassifier(random_state=seed)
@@ -212,7 +212,7 @@ Creates one of the three candidates: support vector machine
 Output: support vector machine model - sklearn
 """
 def create_svm(X_train, y_train, X_test, y_test, tuning=False):
-    print("Creating SVMs...")
+    print("\nCreating SVMs...")
     start_time = time.time()
 
     svm = SVC(random_state=seed)
