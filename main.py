@@ -171,7 +171,7 @@ def create_nn(X_train, y_train, X_test, y_test, seed, tuning=False):
     print("\nCreating neural network...")
     start_time = time.time()
 
-    neural_network = MLPClassifier(random_state = seed)
+    neural_network = MLPClassifier(max_iter= 500, random_state = seed)
 
     if tuning:
         print("NN hyperparameter tuning...")
