@@ -77,24 +77,7 @@ def choose_best_model(candidates, X_test, y_test):
     print("Best model: ", model)
     print("Score of model: ", best_score)
     
-    # # Looking at accuracy values 
-    # print("Running neural network...")
-    # nn = candidates["Neural Network"]
-    # nn_pred = nn.predict(X_test)
-    # nn_accuracy = accuracy_score(y_test, nn_pred)
-    # print("\nnn_accuracy:", nn_accuracy)
-    
-    # print("Running decision tree...")
-    # dtree = candidates["Decision Tree"]
-    # dtree_pred = dtree.predict(X_test)
-    # dtree_accuracy = accuracy_score(y_test, dtree_pred)
-    # print("dtree_accuracy:", dtree_accuracy)
-
-    # print("Running SVM...")
-    # svm = candidates["Support Vector Machine"]
-    # svm_pred = svm.predict(X_test)
-    # svm_accuracy = accuracy_score(y_test, svm_pred)
-    # print("svm_accuracy:", svm_accuracy)
+    return best_model
 
 def visualize_image(X_entry):
     """
@@ -119,7 +102,7 @@ def preprocess_data(X):
         image = normalize_image_rgb(image)
         image = resize_image(image)
         processed_X.append(image)
-    
+
     return processed_X
 
 """
@@ -138,7 +121,7 @@ def resize_image(image):
     # print("Image: ", image)
     # Max pooling function to reduce image by a factor of 2
     resized_image = skimg.block_reduce(image, (2, 2), np.max) 
-
+    print(resized_image)
     return resized_image.reshape(100)
     
 """
@@ -322,7 +305,7 @@ if __name__ == "__main__":
     models = create_all_models(X_train, y_train, X_test, y_test, seed, False)
     
     # Step 4. Select model
-    choose_best_model(models, X_test, y_test)
+    best_model = choose_best_model(models, X_test, y_test)
 
     # Step 5. Evaluate model
     print("Evaluating model...")
