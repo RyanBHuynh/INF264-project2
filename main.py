@@ -142,8 +142,8 @@ def create_nn(X_train, y_train, X_test, y_test, seed, tuning=False):
 
     if tuning:
         parameter_grid = {
-            "max_depth": ['identity', 'logistic', 'tanh', 'relu'],
-            "solver": ['lbfgs', 'sgd', 'adam'],
+            "max_depth": ['logistic', 'relu'],
+            "solver": ['sgd', 'adam'],
             "learning_rate": ['constant', 'adaptive']
         }
         
