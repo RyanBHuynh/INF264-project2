@@ -65,7 +65,7 @@ def choose_best_model(candidates, X_test, y_test):
     for name in candidates:
         # 10 is a common cross validation fold value
         model = candidates[name]
-        mean_score = cross_val_score(model, X_test, y_test, vc=10).mean()
+        mean_score = cross_val_score(model, X_test, y_test, cv=10).mean()
         
         if mean_score > best_score:
             best_score = mean_score
