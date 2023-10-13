@@ -74,24 +74,7 @@ def choose_best_model(candidates, X_test, y_test):
     print("Best model: ", model)
     print("Score of model: ", best_score)
     
-    # # Looking at accuracy values 
-    # print("Running neural network...")
-    # nn = candidates["Neural Network"]
-    # nn_pred = nn.predict(X_test)
-    # nn_accuracy = accuracy_score(y_test, nn_pred)
-    # print("\nnn_accuracy:", nn_accuracy)
-    
-    # print("Running decision tree...")
-    # dtree = candidates["Decision Tree"]
-    # dtree_pred = dtree.predict(X_test)
-    # dtree_accuracy = accuracy_score(y_test, dtree_pred)
-    # print("dtree_accuracy:", dtree_accuracy)
-
-    # print("Running SVM...")
-    # svm = candidates["Support Vector Machine"]
-    # svm_pred = svm.predict(X_test)
-    # svm_accuracy = accuracy_score(y_test, svm_pred)
-    # print("svm_accuracy:", svm_accuracy)
+    return best_model
 
 def visualize_image(X_entry):
     """
@@ -320,7 +303,7 @@ if __name__ == "__main__":
     
     # Step 4. Select model
     print("Choosing best model...")
-    choose_best_model(models, X_test, y_test)
+    best_model = choose_best_model(models, X_test, y_test)
 
     # Step 5. Evaluate model
     print("Evaluating model...")
