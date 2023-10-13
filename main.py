@@ -35,7 +35,7 @@ def create_train_test_valid_sets(X, y, seed):
     """
     print("Splitting data into training, test, and validation sets...")
     # Create training set
-    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=seed)
+    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.6, random_state=seed)
 
     # Split test into test and validation set
     X_test, X_valid, y_test, y_valid = train_test_split(X_test, y_test, test_size=0.5, random_state=seed)
@@ -215,7 +215,7 @@ def create_dtree(X_train, y_train, X_test, y_test, seed, tuning=False):
     if tuning: 
         print("Decision Tree hyperparameter tuning...")
         parameter_grid = {
-            "max_depth": [17, 20, 23],
+            "max_depth": [17, 20],
             "criterion": ["gini", "entropy"],
             "splitter": ["best", "random"]
         }
@@ -254,9 +254,9 @@ def create_svm(X_train, y_train, X_test, y_test, seed, tuning=False):
     if tuning:
         print("SVM hyperparameter tuning...")
         parameter_grid = {
-            'C': [0.1, 1, 10, 100],  
+            'C': [1, 10],  
             'gamma': ["auto", "scale"], 
-            'kernel': ['rbf', 'poly', 'sigmoid']
+            'kernel': ['rbf', 'poly']
         }
     
         grid_search = GridSearchCV(svm, parameter_grid, cv=3)
@@ -302,7 +302,7 @@ if __name__ == "__main__":
     y_test = model_dict['y']['test']
 
     # Step 3. Create 3 test models
-    models = create_all_models(X_train, y_train, X_test, y_test, seed, False)
+    models = create_all_models(X_train, y_train, X_test, y_test, seed, True)
     
     # Step 4. Select model
     best_model = choose_best_model(models, X_test, y_test)
