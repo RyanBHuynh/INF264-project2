@@ -185,6 +185,7 @@ def create_nn(X_train, y_train, X_test, y_test, seed, tuning=False):
     neural_network = MLPClassifier(random_state = seed)
 
     if tuning:
+        print("NN hyperparameter tuning...")
         parameter_grid = {
             "activation": ['logistic', 'relu'],
             "solver": ['sgd', 'adam'],
@@ -201,7 +202,7 @@ def create_nn(X_train, y_train, X_test, y_test, seed, tuning=False):
         best_nn = neural_network.fit(X_train, y_train)
     
     total_time = time.time() - start_time
-    print("Neural network training complete")
+    print("Neural network create")
     print(f"Finished in {total_time} seconds")
 
     # DEBUG ACCURACY
@@ -223,8 +224,9 @@ def create_dtree(X_train, y_train, X_test, y_test, seed, tuning=False):
     dtree = DecisionTreeClassifier(random_state=seed)
     
     if tuning: 
+        print("Decision Tree hyperparameter tuning...")
         parameter_grid = {
-            "max_depth": [20, 25, 30],
+            "max_depth": [17, 20, 23],
             "criterion": ["gini", "entropy"],
             "splitter": ["best", "random"]
         }
