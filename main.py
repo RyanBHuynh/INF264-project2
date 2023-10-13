@@ -34,7 +34,7 @@ def create_train_test_valid_sets(X, y, seed):
     """
     print("Splitting data...")
     # Create training set
-    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.9, random_state=seed)
+    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.8, random_state=seed)
 
     # Split test into test and validation set
     X_test, X_valid, y_test, y_valid = train_test_split(X_test, y_test, test_size=0.5, random_state=seed)
@@ -62,8 +62,9 @@ def choose_best_model(candidates, X_test, y_test):
     best_model = None
     best_score = 0
     
-    for name, model in candidates:
+    for name in candidates:
         # 10 is a common cross validation fold value
+        model = candidates[name]
         mean_score = cross_val_score(model, X_test, y_test, vc=10).mean()
         
         if mean_score > best_score:
@@ -73,24 +74,24 @@ def choose_best_model(candidates, X_test, y_test):
     print("Best model: ", model)
     print("Score of model: ", best_score)
     
-    # Looking at accuracy values 
-    print("Running neural network...")
-    nn = candidates["Neural Network"]
-    nn_pred = nn.predict(X_test)
-    nn_accuracy = accuracy_score(y_test, nn_pred)
-    print("\nnn_accuracy:", nn_accuracy)
+    # # Looking at accuracy values 
+    # print("Running neural network...")
+    # nn = candidates["Neural Network"]
+    # nn_pred = nn.predict(X_test)
+    # nn_accuracy = accuracy_score(y_test, nn_pred)
+    # print("\nnn_accuracy:", nn_accuracy)
     
-    print("Running decision tree...")
-    dtree = candidates["Decision Tree"]
-    dtree_pred = dtree.predict(X_test)
-    dtree_accuracy = accuracy_score(y_test, dtree_pred)
-    print("dtree_accuracy:", dtree_accuracy)
+    # print("Running decision tree...")
+    # dtree = candidates["Decision Tree"]
+    # dtree_pred = dtree.predict(X_test)
+    # dtree_accuracy = accuracy_score(y_test, dtree_pred)
+    # print("dtree_accuracy:", dtree_accuracy)
 
-    print("Running SVM...")
-    svm = candidates["Support Vector Machine"]
-    svm_pred = svm.predict(X_test)
-    svm_accuracy = accuracy_score(y_test, svm_pred)
-    print("svm_accuracy:", svm_accuracy)
+    # print("Running SVM...")
+    # svm = candidates["Support Vector Machine"]
+    # svm_pred = svm.predict(X_test)
+    # svm_accuracy = accuracy_score(y_test, svm_pred)
+    # print("svm_accuracy:", svm_accuracy)
 
 def visualize_image(X_entry):
     """
@@ -115,11 +116,11 @@ Output: returns data structure of the three models
 """
 def create_all_models(X_train, y_train, X_test, y_test, seed):
     # 1: NEURAL NETWORK
-    nn = create_nn(X_train, y_train, X_test, y_test, seed)
+    nn = create_nn(X_train, y_train, X_test, y_test, seed, True)
     # 2: DECISION TREE
-    dtree = create_dtree(X_train, y_train, X_test, y_test, seed)
+    dtree = create_dtree(X_train, y_train, X_test, y_test, seed, True)
     # 3: SUPPORT VECTOR MACHINE
-    svm = create_svm(X_train, y_train, X_test, y_test, seed)
+    svm = create_svm(X_train, y_train, X_test, y_test, seed, True)
     
     candidates = {
         "Neural Network" : nn,
@@ -142,7 +143,7 @@ def create_nn(X_train, y_train, X_test, y_test, seed, tuning=False):
 
     if tuning:
         parameter_grid = {
-            "max_depth": ['logistic', 'relu'],
+            "activation": ['logistic', 'relu'],
             "solver": ['sgd', 'adam'],
             "learning_rate": ['constant', 'adaptive']
         }
@@ -163,7 +164,7 @@ def create_nn(X_train, y_train, X_test, y_test, seed, tuning=False):
     # DEBUG ACCURACY
     nn_pred = best_nn.predict(X_test)
     nn_accuracy = accuracy_score(y_test, nn_pred)
-    print("\nnn_accuracy:", nn_accuracy)
+    print("nn_accuracy:", nn_accuracy)
 
     return best_nn
 
@@ -216,7 +217,6 @@ def create_svm(X_train, y_train, X_test, y_test, seed, tuning=False):
     start_time = time.time()
 
     svm = SVC(random_state=seed)
-    print("tuning =", tuning)
     if tuning:
         print("SVM hyperparameter tuning...")
         parameter_grid = {
