@@ -211,13 +211,14 @@ Creates one of the three candidates: support vector machine
 
 Output: support vector machine model - sklearn
 """
-def create_svm(X_train, y_train, X_test, y_test, tuning=False):
+def create_svm(X_train, y_train, X_test, y_test, seed, tuning=False):
     print("\nCreating SVMs...")
     start_time = time.time()
 
     svm = SVC(random_state=seed)
-    
+    print("tuning =", tuning)
     if tuning:
+        print("SVM hyperparameter tuning...")
         parameter_grid = {
             'C': [0.1, 1, 10, 100],  
             'gamma': ["auto", "scale"], 
