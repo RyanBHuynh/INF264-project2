@@ -2,10 +2,6 @@
 # Phillip Lei and Ryan Huynh
 
 # TODO:
-# - Create neural network
-# - Create support vector machine
-# - Create decision tree
-# - Create model selection feature
 # - Perform model analysis
 # - Create model visualizations
 # - Create automated test pipeline
@@ -39,6 +35,7 @@ def create_train_test_valid_sets(X, y, seed):
     # Split test into test and validation set
     X_test, X_valid, y_test, y_valid = train_test_split(X_test, y_test, test_size=0.5, random_state=seed)
 
+    # Store splits into a dictionary structure
     model_dict = {
         "X": {
             "train": X_train,
@@ -55,6 +52,12 @@ def create_train_test_valid_sets(X, y, seed):
     print("Data successfully split into train, test, and validation sets")
     return model_dict
 
+"""
+This function is supposed to score each candidate model through cross validation 
+and return the one with the best score.
+
+Return: model with the best score
+"""
 def choose_best_model(candidates, X_test, y_test):
     """
     Selects the best model out of the three
@@ -62,6 +65,7 @@ def choose_best_model(candidates, X_test, y_test):
     best_model = None
     best_score = 0
     
+    # Iterate through candidate models 
     for name in candidates:
         # 10 is a common cross validation fold value
         model = candidates[name]
@@ -76,13 +80,14 @@ def choose_best_model(candidates, X_test, y_test):
     
     return best_model
 
+"""
+Visualizes an image from the X array
+
+Parameters:
+    - X_entry is an entry from the array X
+"""
 def visualize_image(X_entry):
-    """
-    Visualizes an image from the X array
-    
-    Parameters:
-     - X_entry is an entry from the array X
-    """
+    # Helper function to view an image
     plt.imshow(X_entry.reshape(20,20), vmin=0, vmax=255, cmap="gray")
     plt.show()
 
@@ -90,10 +95,13 @@ def visualize_image(X_entry):
 Process data by setting image pixels to binary values and scaling images down.
 Intended to help computation run time.
 
+Output: array of processed image lists
 """
 def preprocess_data(X):
     processed_X = []
     
+    # For every image, set the image pixels to binary values
+    # and downsize the image in order to improve computation
     for image in X:
         image = normalize_image_rgb(image)
         image = resize_image(image)
@@ -108,16 +116,15 @@ should help our training run faster.
 Output: resized np array representing an image
 """
 def resize_image(image):
-    # print("Image Size: ", len(image))
-    # turn image into np array
+    # Turn image into np array if it is not
     if isinstance(image, np.ndarray):
         image = np.array(image)
         
     image = image.reshape(20, 20)
-    # print("Image: ", image)
-    # Max pooling function to reduce image by a factor of 2
+    # Max pooling function to reduce image by a factor of 2, 
+    # turning the original image into 1/4th of the size
     resized_image = skimg.block_reduce(image, (2, 2), np.max) 
-    print(resized_image)
+    
     return resized_image.reshape(100)
     
 """
@@ -126,6 +133,8 @@ Normalize pixel values of the image to 0 or 1.
 Output: image with each value being binary
 """
 def normalize_image_rgb(image):
+    # Assign a pixel a 1 or 0 based off the middle threshold:
+    # between 0 and 255
     border = 127
     for i in range(len(image)):
         if image[i] > border:
@@ -136,7 +145,8 @@ def normalize_image_rgb(image):
     return image    
 
 """
-Responsible for creating the three candidate models: nn, decision tree, support vector machine.
+Responsible for creating the three candidate models: 
+nn, decision tree, support vector machine.
 
 Output: returns data structure of the three models
 """
@@ -167,6 +177,7 @@ def create_nn(X_train, y_train, X_test, y_test, seed, tuning=False):
 
     neural_network = MLPClassifier(random_state = seed)
 
+    # Create a tuning list for grid search to find the best of them
     if tuning:
         print("NN hyperparameter tuning...")
         parameter_grid = {
@@ -175,6 +186,8 @@ def create_nn(X_train, y_train, X_test, y_test, seed, tuning=False):
             "learning_rate": ['constant', 'adaptive']
         }
         
+        # Grid search finds the best of the hyperparameters
+        # and fits/trains models to find the best performance
         grid_search = GridSearchCV(neural_network, parameter_grid, cv=3)
         grid_search.fit(X_train, y_train)
         best_params = grid_search.best_params_
@@ -206,6 +219,7 @@ def create_dtree(X_train, y_train, X_test, y_test, seed, tuning=False):
 
     dtree = DecisionTreeClassifier(random_state=seed)
     
+    # Create a tuning list for grid search to find the best of them
     if tuning: 
         print("Decision Tree hyperparameter tuning...")
         parameter_grid = {
@@ -214,13 +228,14 @@ def create_dtree(X_train, y_train, X_test, y_test, seed, tuning=False):
             "splitter": ["best", "random"]
         }
         
+        # Grid search finds the best of the hyperparameters
+        # and fits/trains models to find the best performance
         grid_search = GridSearchCV(dtree, parameter_grid, cv=3)
         grid_search.fit(X_train, y_train)
         best_params = grid_search.best_params_
         print("Best Decision Tree Parameters: " + str(best_params))
         best_dtree = grid_search.best_estimator_
         best_dtree = dtree.fit(X_train, y_train)
-
     else:
         best_dtree = dtree.fit(X_train, y_train)
 
@@ -245,6 +260,8 @@ def create_svm(X_train, y_train, X_test, y_test, seed, tuning=False):
     start_time = time.time()
 
     svm = SVC(random_state=seed)
+    
+    # Create a tuning list for grid search to find the best of them
     if tuning:
         print("SVM hyperparameter tuning...")
         parameter_grid = {
@@ -253,12 +270,13 @@ def create_svm(X_train, y_train, X_test, y_test, seed, tuning=False):
             'kernel': ['rbf', 'poly', 'sigmoid']
         }
     
+        # Grid search finds the best of the hyperparameters
+        # and fits/trains models to find the best performance
         grid_search = GridSearchCV(svm, parameter_grid, cv=3)
         grid_search.fit(X_train, y_train)
         best_params = grid_search.best_params_
         print("Best SVM Parameters: " + str(best_params))
         best_svm = grid_search.best_estimator_
-
     else:
         best_svm = svm.fit(X_train, y_train)
 
@@ -273,6 +291,9 @@ def create_svm(X_train, y_train, X_test, y_test, seed, tuning=False):
 
     return best_svm
 
+"""
+Add explanation
+"""
 def evaluate_model():
     pass
 
@@ -285,8 +306,8 @@ if __name__ == "__main__":
     print("Preprocessing data...")
     X = preprocess_data(X)
     
-    # Note: fix a seed for reproducibility
-    seed = 143 # Å
+    # Note: fix an arbitrary seed for reproducibility
+    seed = 143 
 
     # Step 2. Split processed data
     print("Splitting data...")
@@ -308,4 +329,4 @@ if __name__ == "__main__":
     # Step 5. Evaluate model
     print("Evaluating model...")
     
-    # Step 6. Print out numbers like accuracy. Should be reproducible across runs
+    # Step 6. Print out numbers like accuracy. Also plots and visualizations
