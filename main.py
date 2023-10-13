@@ -30,8 +30,15 @@ def create_train_test_valid_sets(X, y, seed):
     Return value: a dictionary containing train, test, and validation sets for X and y
     """
     print("Splitting data into training, test, and validation sets...")
+
+    train_set_size = 0.4
+    test_size = 1 - train_set_size
+
+    print(f"training set size: {train_set_size * 10}%")
+    print(f"test set size: {test_size * 10}%")
+
     # Create training set
-    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.6, random_state=seed)
+    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=test_size, random_state=seed)
 
     # Split test into test and validation set
     X_test, X_valid, y_test, y_valid = train_test_split(X_test, y_test, test_size=0.5, random_state=seed)
