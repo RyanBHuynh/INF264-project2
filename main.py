@@ -115,7 +115,7 @@ def preprocess_data(X):
         image = normalize_image_rgb(image)
         image = resize_image(image)
         processed_X.append(image)
-    
+
     return processed_X
 
 """
@@ -134,7 +134,7 @@ def resize_image(image):
     # print("Image: ", image)
     # Max pooling function to reduce image by a factor of 2
     resized_image = skimg.block_reduce(image, (2, 2), np.max) 
-
+    print(resized_image)
     return resized_image.reshape(100)
     
 """
