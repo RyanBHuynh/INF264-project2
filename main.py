@@ -29,8 +29,9 @@ def create_train_test_valid_sets(X, y, seed):
 
     Return value: a dictionary containing train, test, and validation sets for X and y
     """
+    print("Splitting data into training, test, and validation sets...")
     # Create training set
-    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.8, random_state=seed)
+    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=seed)
 
     # Split test into test and validation set
     X_test, X_valid, y_test, y_valid = train_test_split(X_test, y_test, test_size=0.5, random_state=seed)
@@ -62,6 +63,8 @@ def choose_best_model(candidates, X_test, y_test):
     """
     Selects the best model out of the three
     """
+    print("Choosing best model...")
+
     best_model = None
     best_score = 0
     
@@ -98,6 +101,7 @@ Intended to help computation run time.
 Output: array of processed image lists
 """
 def preprocess_data(X):
+    print("Preprocessing data...")
     processed_X = []
     
     # For every image, set the image pixels to binary values
@@ -150,13 +154,15 @@ nn, decision tree, support vector machine.
 
 Output: returns data structure of the three models
 """
-def create_all_models(X_train, y_train, X_test, y_test, seed):
+def create_all_models(X_train, y_train, X_test, y_test, seed, tuning):
+    print("Creating 3 candidate models...")
+
     # 1: NEURAL NETWORK
-    nn = create_nn(X_train, y_train, X_test, y_test, seed, True)
+    nn = create_nn(X_train, y_train, X_test, y_test, seed, tuning)
     # 2: DECISION TREE
-    dtree = create_dtree(X_train, y_train, X_test, y_test, seed, True)
+    dtree = create_dtree(X_train, y_train, X_test, y_test, seed, tuning)
     # 3: SUPPORT VECTOR MACHINE
-    svm = create_svm(X_train, y_train, X_test, y_test, seed, True)
+    svm = create_svm(X_train, y_train, X_test, y_test, seed, tuning)
     
     candidates = {
         "Neural Network" : nn,
@@ -303,14 +309,12 @@ if __name__ == "__main__":
     y = np.load("emnist_hex_labels.npy")
     
     # Step 1. Preprocess Data
-    print("Preprocessing data...")
     X = preprocess_data(X)
     
     # Note: fix an arbitrary seed for reproducibility
     seed = 143 
 
     # Step 2. Split processed data
-    print("Splitting data...")
     model_dict = create_train_test_valid_sets(X, y, seed)
 
     X_train = model_dict["X"]["train"]
@@ -319,11 +323,9 @@ if __name__ == "__main__":
     y_test = model_dict['y']['test']
 
     # Step 3. Create 3 test models
-    print("Creating 3 candidate models...")
-    models = create_all_models(X_train, y_train, X_test, y_test, seed)
+    models = create_all_models(X_train, y_train, X_test, y_test, seed, False)
     
     # Step 4. Select model
-    print("Choosing best model...")
     best_model = choose_best_model(models, X_test, y_test)
 
     # Step 5. Evaluate model
