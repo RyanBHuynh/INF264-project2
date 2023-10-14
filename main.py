@@ -31,11 +31,11 @@ def create_train_test_valid_sets(X, y, seed):
     """
     print("Splitting data into training, test, and validation sets...")
 
-    train_set_size = 0.4
+    train_set_size = 0.8
     test_size = 1 - train_set_size
 
-    print(f"training set size: {train_set_size * 10}%")
-    print(f"test set size: {test_size * 10}%")
+    print(f"training set size: {(train_set_size * 100):.2f}%")
+    print(f"test set size: {(test_size * 100):.2f}%")
 
     # Create training set
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=test_size, random_state=seed)
@@ -330,7 +330,7 @@ if __name__ == "__main__":
     y_test = model_dict['y']['test']
 
     # Step 3. Create 3 test models
-    models = create_all_models(X_train, y_train, X_test, y_test, seed, True)
+    models = create_all_models(X_train, y_train, X_test, y_test, seed, False)
     
     # Step 4. Select model
     best_model = choose_best_model(models, X_test, y_test)
