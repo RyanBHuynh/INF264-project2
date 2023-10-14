@@ -4,6 +4,7 @@
 # TODO:
 # - Finish evaluation
 # - Hard code the best hyperparameters
+# - Look at misclassified examples
 # - Create model visualizations
 # - Create automated test pipeline
 
@@ -41,20 +42,15 @@ def create_train_test_valid_sets(X, y, seed):
     # Create training set
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=test_size, random_state=seed)
 
-    # Split test into test and validation set
-    X_test, X_valid, y_test, y_valid = train_test_split(X_test, y_test, test_size=0.5, random_state=seed)
-
     # Store splits into a dictionary structure
     model_dict = {
         "X": {
             "train": X_train,
-            "test": X_test,
-            "valid": X_valid
+            "test": X_test
         },
         "y": {
             "train": y_train,
-            "test": y_test,
-            "valid": y_valid
+            "test": y_test
         }
     }
 
