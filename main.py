@@ -2,7 +2,8 @@
 # Phillip Lei and Ryan Huynh
 
 # TODO:
-# - Perform model analysis
+# - Finish evaluation
+# - Hard code the best hyperparameters
 # - Create model visualizations
 # - Create automated test pipeline
 
