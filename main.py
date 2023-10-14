@@ -109,6 +109,8 @@ Output: array of processed image lists
 """
 def preprocess_data(X):
     print("Preprocessing data...")
+    start_time = time.time()
+
     processed_X = []
     
     # For every image, set the image pixels to binary values
@@ -118,6 +120,8 @@ def preprocess_data(X):
         image = resize_image(image)
         processed_X.append(image)
 
+    total_time = time.time() - start_time
+    print(f'Finished preprocessing in {total_time:.2f} seconds')
     return processed_X
 
 """
@@ -212,7 +216,7 @@ def create_nn(X_train, y_train, X_test, y_test, seed, tuning=False):
     
     total_time = time.time() - start_time
     print("Neural network create")
-    print(f"Finished in {total_time} seconds")
+    print(f"Finished in {total_time:.2f} seconds")
 
     # DEBUG ACCURACY
     nn_pred = best_nn.predict(X_test)
@@ -254,7 +258,7 @@ def create_dtree(X_train, y_train, X_test, y_test, seed, tuning=False):
 
     total_time = time.time() - start_time
     print("Decision tree created")
-    print(f"Finished in {total_time} seconds")
+    print(f"Finished in {total_time:.2f} seconds")
 
     # DEBUG ACCURACY
     dtree_pred = best_dtree.predict(X_test)
@@ -295,7 +299,7 @@ def create_svm(X_train, y_train, X_test, y_test, seed, tuning=False):
 
     total_time = time.time() - start_time
     print("SVM created")
-    print(f"Finished in {total_time} seconds")
+    print(f"Finished in {total_time:.2f} seconds")
 
     # DEBUG ACCURACY
     svm_pred = best_svm.predict(X_test)
