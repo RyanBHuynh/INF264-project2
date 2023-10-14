@@ -2,8 +2,6 @@
 # Phillip Lei and Ryan Huynh
 
 # TODO:
-# - Finish evaluation
-# - Hard code the best hyperparameters
 # - Look at misclassified examples
 # - Create model visualizations
 # - Create automated test pipeline
@@ -16,7 +14,7 @@ import matplotlib.pyplot as plt
 import skimage.measure as skimg
 
 from sklearn.neural_network import MLPClassifier
-from sklearn.tree import DecisionTreeClassifier
+from sklearn.tree import DecisionTreeClassifier, plot_tree
 from sklearn.svm import SVC
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import accuracy_score
@@ -313,7 +311,7 @@ Add explanation
 def evaluate_model(best_model, X_test, y_test):
     print("Evaluating model...")
     predictions = best_model.predict(X_test)
-    
+
     return accuracy_score(y_test, predictions)
 
 # Main
@@ -336,7 +334,8 @@ if __name__ == "__main__":
     y_test = model_dict['y']['test']
 
     # Step 3. Create 3 test models
-    models = create_all_models(X_train, y_train, X_test, y_test, seed, False)
+    tuning = False
+    models = create_all_models(X_train, y_train, X_test, y_test, seed, tuning)
     
     # Step 4. Select model
     best_model = choose_best_model(models, X_test, y_test)
@@ -346,3 +345,9 @@ if __name__ == "__main__":
     
     # Step 6. Print out numbers like accuracy. Also plots and visualizations
     print("Accuracy of evalution: ", accuracy)
+
+    # Visualize decision tree
+    plt.figure(figsize=(10,10))
+    plot_tree(models["Decision Tree"], filled=True, fontsize=10)
+    plt.show()
+
