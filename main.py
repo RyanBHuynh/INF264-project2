@@ -189,7 +189,8 @@ def create_nn(X_train, y_train, X_test, y_test, seed, tuning=False):
     print("\nCreating neural network...")
     start_time = time.time()
 
-    neural_network = MLPClassifier(max_iter= 500, random_state = seed)
+    neural_network = MLPClassifier(max_iter= 500, random_state = seed, activation='logistic',
+                                   learning_rate='constant', solver='adam')
 
     # Create a tuning list for grid search to find the best of them
     if tuning:
@@ -231,7 +232,8 @@ def create_dtree(X_train, y_train, X_test, y_test, seed, tuning=False):
     print("\nCreating decision tree...")
     start_time = time.time()
 
-    dtree = DecisionTreeClassifier(random_state=seed)
+    dtree = DecisionTreeClassifier(random_state=seed, criterion='entropy', max_depth=17,
+                                   splitter='random')
     
     # Create a tuning list for grid search to find the best of them
     if tuning: 
@@ -273,7 +275,7 @@ def create_svm(X_train, y_train, X_test, y_test, seed, tuning=False):
     print("\nCreating SVMs...")
     start_time = time.time()
 
-    svm = SVC(random_state=seed)
+    svm = SVC(random_state=seed, C=10, gamma='scale', kernel='rbf')
     
     # Create a tuning list for grid search to find the best of them
     if tuning:
