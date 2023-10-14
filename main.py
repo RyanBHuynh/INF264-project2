@@ -314,8 +314,11 @@ def create_svm(X_train, y_train, X_test, y_test, seed, tuning=False):
 """
 Add explanation
 """
-def evaluate_model():
-    pass
+def evaluate_model(best_model, X_test, y_test):
+    print("Evaluating model...")
+    predictions = best_model.predict(X_test)
+    
+    return accuracy_score(y_test, predictions)
 
 # Main
 if __name__ == "__main__":
@@ -343,6 +346,7 @@ if __name__ == "__main__":
     best_model = choose_best_model(models, X_test, y_test)
 
     # Step 5. Evaluate model
-    print("Evaluating model...")
+    accuracy = evaluate_model(best_model, X_test, y_test)
     
     # Step 6. Print out numbers like accuracy. Also plots and visualizations
+    print("Accuracy of evalution: ", accuracy)
