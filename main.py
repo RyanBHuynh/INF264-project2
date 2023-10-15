@@ -34,8 +34,8 @@ def create_train_test_valid_sets(X, y, seed):
     train_set_size = 0.8
     test_size = 1 - train_set_size
 
-    print(f"training set size: {(train_set_size * 100):.2f}%")
-    print(f"test set size: {(test_size * 100):.2f}%")
+    print(f"training set size: {(train_set_size * 100):.1f}%")
+    print(f"test set size: {(test_size * 100):.1f}%")
 
     # Create training set
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=test_size, random_state=seed)
@@ -314,6 +314,14 @@ def evaluate_model(best_model, X_test, y_test):
 
     return accuracy_score(y_test, predictions)
 
+"""
+Visualizes the decision tree up to a max depth
+"""
+def visualize_decision_tree(tree):
+    plt.figure(figsize=(12,8))
+    plot_tree(tree, filled=True, label='all', impurity=False, max_depth=2, fontsize=7)
+    plt.show()
+
 # Main
 if __name__ == "__main__":
     X = np.load("emnist_hex_images.npy")
@@ -347,7 +355,8 @@ if __name__ == "__main__":
     print("Accuracy of evalution: ", accuracy)
 
     # Visualize decision tree
-    plt.figure(figsize=(10,10))
-    plot_tree(models["Decision Tree"], filled=True, fontsize=10)
-    plt.show()
+    visualize_decision_tree(models["Decision Tree"])
+
+    # Visualize learning curves for each model
+
 
