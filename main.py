@@ -17,7 +17,7 @@ from sklearn.neural_network import MLPClassifier
 from sklearn.tree import DecisionTreeClassifier, plot_tree
 from sklearn.svm import SVC
 from sklearn.model_selection import train_test_split
-from sklearn.metrics import accuracy_score
+from sklearn.metrics import accuracy_score, confusion_matrix
 from sklearn.model_selection import GridSearchCV, cross_val_score
 
 # Functions
@@ -357,6 +357,8 @@ if __name__ == "__main__":
     # Visualize decision tree
     visualize_decision_tree(models["Decision Tree"])
 
-    # Visualize learning curves for each model
+    # Visualize confusion matrix for best model
+    confusion_matrix = confusion_matrix(y_test, best_model.predict(X_test))
+    print(confusion_matrix)
 
 
